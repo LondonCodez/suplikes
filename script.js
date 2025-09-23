@@ -1,4 +1,9 @@
 // DOM Elements
+const hababiGate = document.getElementById('hababiGate');
+const mainContent = document.getElementById('mainContent');
+const yesBtn = document.getElementById('yesBtn');
+const noBtn = document.getElementById('noBtn');
+
 const modeScreen = document.getElementById('modeScreen');
 const passwordScreen = document.getElementById('passwordScreen');
 const loginScreen = document.getElementById('loginScreen');
@@ -32,12 +37,16 @@ let currentMode = ''; // 'free' or 'payment'
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', function() {
-    showScreen('mode');
     setupEventListeners();
+    // Gate is shown by default, main content is blurred
 });
 
 // Event Listeners
 function setupEventListeners() {
+    // Hababi Nation Gate listeners
+    yesBtn.addEventListener('click', handleYesButton);
+    noBtn.addEventListener('click', handleNoButton);
+    
     freeModeBtn.addEventListener('click', handleFreeMode);
     paymentModeBtn.addEventListener('click', handlePaymentMode);
     passwordBtn.addEventListener('click', handlePasswordValidation);
@@ -306,6 +315,21 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// Hababi Nation Gate Functions
+function handleYesButton() {
+    // Redirect to the YouTube link
+    window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+}
+
+function handleNoButton() {
+    // Hide the gate and remove blur from main content
+    hababiGate.classList.add('gate-hidden');
+    mainContent.classList.remove('blurred');
+    
+    // Show the mode selection screen
+    showScreen('mode');
+}
 
 // Easter egg: Konami code for bonus sup likes
 let konamiCode = [];
