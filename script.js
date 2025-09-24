@@ -5,7 +5,7 @@ const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
 
 const modeScreen = document.getElementById('modeScreen');
-const passwordScreen = document.getElementById('passwordScreen');
+const passcodeScreen = document.getElementById('passwordScreen');
 const loginScreen = document.getElementById('loginScreen');
 const inputScreen = document.getElementById('inputScreen');
 const freeResultsScreen = document.getElementById('freeResultsScreen');
@@ -13,8 +13,8 @@ const paymentResultsScreen = document.getElementById('paymentResultsScreen');
 
 const freeModeBtn = document.getElementById('freeModeBtn');
 const paymentModeBtn = document.getElementById('paymentModeBtn');
-const passwordInput = document.getElementById('passwordInput');
-const passwordBtn = document.getElementById('passwordBtn');
+const passcodeInput = document.getElementById('passwordInput');
+const passcodeBtn = document.getElementById('passwordBtn');
 const backToModeBtn = document.getElementById('backToModeBtn');
 
 const nameInput = document.getElementById('nameInput');
@@ -49,7 +49,7 @@ function setupEventListeners() {
     
     freeModeBtn.addEventListener('click', handleFreeMode);
     paymentModeBtn.addEventListener('click', handlePaymentMode);
-    passwordBtn.addEventListener('click', handlePasswordValidation);
+    passcodeBtn.addEventListener('click', handlePasscodeValidation);
     backToModeBtn.addEventListener('click', handleBackToMode);
     loginBtn.addEventListener('click', handleLogin);
     setLikesBtn.addEventListener('click', handleSetLikes);
@@ -69,9 +69,9 @@ function setupEventListeners() {
         }
     });
     
-    passwordInput.addEventListener('keypress', function(e) {
+    passcodeInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
-            handlePasswordValidation();
+            handlePasscodeValidation();
         }
     });
 }
@@ -80,7 +80,7 @@ function setupEventListeners() {
 function showScreen(screenName) {
     // Hide all screens
     modeScreen.classList.remove('active');
-    passwordScreen.classList.remove('active');
+    passcodeScreen.classList.remove('active');
     loginScreen.classList.remove('active');
     inputScreen.classList.remove('active');
     freeResultsScreen.classList.remove('active');
@@ -91,9 +91,9 @@ function showScreen(screenName) {
         case 'mode':
             modeScreen.classList.add('active');
             break;
-        case 'password':
-            passwordScreen.classList.add('active');
-            passwordInput.focus();
+        case 'passcode':
+            passcodeScreen.classList.add('active');
+            passcodeInput.focus();
             break;
         case 'login':
             loginScreen.classList.add('active');
@@ -119,34 +119,34 @@ function handleFreeMode() {
 }
 
 function handlePaymentMode() {
-    showScreen('password');
+    currentMode = 'payment';
+    showScreen('login');
 }
 
-function handlePasswordValidation() {
-    const password = passwordInput.value.trim();
+function handlePasscodeValidation() {
+    const passcode = passcodeInput.value.trim();
     
-    if (password === '2626') {
-        currentMode = 'payment';
-        passwordInput.value = '';
+    if (passcode === '2626') {
+        passcodeInput.value = '';
         
         // Add loading effect with "Correct!" message
-        passwordBtn.innerHTML = 'Correct! <span class="loading"></span>';
-        passwordBtn.disabled = true;
+        passcodeBtn.innerHTML = 'Correct! <span class="loading"></span>';
+        passcodeBtn.disabled = true;
         
         setTimeout(() => {
-            showScreen('login');
-            passwordBtn.innerHTML = 'Access Payment Mode';
-            passwordBtn.disabled = false;
+            showScreen('mode');
+            passcodeBtn.innerHTML = 'Enter Passcode';
+            passcodeBtn.disabled = false;
         }, 1000);
     } else {
-        alert('Incorrect password! Please try again.');
-        passwordInput.focus();
+        alert('Incorrect passcode! Please try again.');
+        passcodeInput.focus();
     }
 }
 
 function handleBackToMode() {
-    passwordInput.value = '';
-    showScreen('mode');
+    passcodeInput.value = '';
+    showScreen('passcode');
 }
 
 // Login Handler
@@ -236,7 +236,7 @@ function handleReset() {
     currentMode = '';
     nameInput.value = '';
     supLikesInput.value = '';
-    passwordInput.value = '';
+    passcodeInput.value = '';
     
     // Add loading effect for whichever button was clicked
     const resetButton = event.target;
@@ -327,8 +327,8 @@ function handleNoButton() {
     hababiGate.classList.add('gate-hidden');
     mainContent.classList.remove('blurred');
     
-    // Show the mode selection screen
-    showScreen('mode');
+    // Show the passcode screen for non-hababi nation users
+    showScreen('passcode');
 }
 
 // Easter egg: Konami code for bonus sup likes
