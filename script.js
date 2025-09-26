@@ -43,18 +43,7 @@ let currentMode = ''; // 'free' or 'payment'
 let lastScreen = ''; // Track where we came from for back navigation
 
 // Leaderboard data
-let leaderboardData = [
-    { name: 'SupKing2024', likes: 999999, mode: 'free' },
-    { name: 'HababiLegend', likes: 888888, mode: 'payment' },
-    { name: 'RepublicChamp', likes: 777777, mode: 'free' },
-    { name: 'SupMaster', likes: 666666, mode: 'payment' },
-    { name: 'LikesGuru', likes: 555555, mode: 'free' },
-    { name: 'SupNinja', likes: 444444, mode: 'free' },
-    { name: 'HababiPro', likes: 333333, mode: 'payment' },
-    { name: 'RepublicStar', likes: 222222, mode: 'free' },
-    { name: 'SupWizard', likes: 111111, mode: 'payment' },
-    { name: 'LikesHero', likes: 99999, mode: 'free' }
-];
+let leaderboardData = [];
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', function() {
