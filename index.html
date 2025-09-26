@@ -29,7 +29,7 @@
                 <h2>Choose Your Mode</h2>
                 <p>Select how you want to access your Sup Likes</p>
                 <button id="freeModeBtn" class="mode-button">Free Mode</button>
-                <button id="paymentModeBtn" class="mode-button">Payment Mode (Gift)</button>
+                <button id="paymentModeBtn" class="mode-button">Payment Mode (Admin)</button>
             </div>
         </div>
 
@@ -37,7 +37,7 @@
         <div id="passwordScreen" class="screen">
             <div class="password-box">
                 <h2>Access Required</h2>
-                <p>Enter the passcode to continue</p>
+                <p>Enter the passcode to continue (2626)</p>
                 <input type="password" id="passwordInput" placeholder="Enter passcode">
                 <button id="passwordBtn">Enter Passcode</button>
                 <button id="backToModeBtn" class="back-button">Back</button>
@@ -72,6 +72,7 @@
                     <h1>You Have <span id="freeLikesAmount"></span> Sup Likes</h1>
                 </div>
                 <button id="freeResetBtn">Start Over</button>
+                <button id="freeLeaderboardBtn" class="leaderboard-button">View Leaderboard</button>
             </div>
         </div>
 
@@ -83,6 +84,20 @@
                     <h1>You Have Been Gifted <span id="paymentLikesAmount"></span> Sup Likes</h1>
                 </div>
                 <button id="paymentResetBtn">Start Over</button>
+                <button id="paymentLeaderboardBtn" class="leaderboard-button">View Leaderboard</button>
+            </div>
+        </div>
+
+        <!-- Leaderboard Screen -->
+        <div id="leaderboardScreen" class="screen">
+            <div class="leaderboard-box">
+                <h2>🏆 Sup Likes Leaderboard 🏆</h2>
+                <div class="leaderboard-list" id="leaderboardList">
+                </div>
+                <div class="leaderboard-buttons">
+                    <button id="addToLeaderboardBtn" class="add-button">Add My Score</button>
+                    <button id="backFromLeaderboardBtn" class="back-button">Back</button>
+                </div>
             </div>
         </div>
     </div>
