@@ -371,3 +371,129 @@ button:active {
         margin: 20px;
     }
 }
+
+/* Leaderboard Styles */
+.leaderboard-box {
+    background: rgba(139, 0, 0, 0.9);
+    border: 3px solid #FFD700;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.leaderboard-box h2 {
+    font-size: 2rem;
+    margin-bottom: 25px;
+    color: #FFD700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.leaderboard-list {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 25px;
+    border: 2px solid #FFD700;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.leaderboard-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.leaderboard-item:last-child {
+    border-bottom: none;
+}
+
+.leaderboard-item:hover {
+    background: rgba(255, 215, 0, 0.1);
+    transform: translateX(5px);
+}
+
+.leaderboard-item.current-user {
+    background: rgba(255, 215, 0, 0.2);
+    border: 2px solid #FFD700;
+    font-weight: bold;
+}
+
+.leaderboard-item .rank {
+    font-size: 1.2rem;
+    font-weight: bold;
+    min-width: 50px;
+    text-align: left;
+}
+
+.leaderboard-item .name {
+    flex: 1;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #FFD700;
+}
+
+.leaderboard-item .likes {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #FF6347;
+    min-width: 120px;
+    text-align: right;
+}
+
+.leaderboard-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.leaderboard-button, .add-button {
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+    color: #8B0000;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+.leaderboard-button:hover, .add-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+    background: linear-gradient(45deg, #FFA500, #FFD700);
+}
+
+/* Responsive Leaderboard */
+@media (max-width: 600px) {
+    .leaderboard-item {
+        padding: 10px 15px;
+        flex-direction: column;
+        text-align: center;
+        gap: 5px;
+    }
+    
+    .leaderboard-item .rank,
+    .leaderboard-item .name,
+    .leaderboard-item .likes {
+        min-width: auto;
+        text-align: center;
+    }
+    
+    .leaderboard-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .leaderboard-button, .add-button {
+        width: 100%;
+        max-width: 200px;
+    }
+}
