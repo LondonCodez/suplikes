@@ -48,8 +48,26 @@ let leaderboardData = [];
 // Initialize the app
 document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
+    loadLeaderboardData();
     // Gate is shown by default, main content is blurred
 });
+
+// Leaderboard persistence functions
+function saveLeaderboardData() {
+    localStorage.setItem('supLikesLeaderboard', JSON.stringify(leaderboardData));
+}
+
+function loadLeaderboardData() {
+    const savedData = localStorage.getItem('supLikesLeaderboard');
+    if (savedData) {
+        try {
+            leaderboardData = JSON.parse(savedData);
+        } catch (error) {
+            console.error('Error loading leaderboard data:', error);
+            leaderboardData = [];
+        }
+    }
+}
 
 // Event Listeners
 function setupEventListeners() {
@@ -384,6 +402,7 @@ function handleAddToLeaderboard() {
         if (currentLikes > leaderboardData[existingIndex].likes) {
             leaderboardData[existingIndex].likes = currentLikes;
             leaderboardData[existingIndex].mode = currentMode;
+            saveLeaderboardData();
             alert('🎉 New personal best! Leaderboard updated!');
         } else {
             alert('Your current score is not higher than your leaderboard entry.');
@@ -395,6 +414,7 @@ function handleAddToLeaderboard() {
             likes: currentLikes,
             mode: currentMode
         });
+        saveLeaderboardData();
         alert('🎉 Added to leaderboard!');
     }
     
