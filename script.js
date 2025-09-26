@@ -29,11 +29,32 @@ const freeLikesAmount = document.getElementById('freeLikesAmount');
 const paymentLikesAmount = document.getElementById('paymentLikesAmount');
 const freeResetBtn = document.getElementById('freeResetBtn');
 const paymentResetBtn = document.getElementById('paymentResetBtn');
+const freeLeaderboardBtn = document.getElementById('freeLeaderboardBtn');
+const paymentLeaderboardBtn = document.getElementById('paymentLeaderboardBtn');
+const leaderboardScreen = document.getElementById('leaderboardScreen');
+const leaderboardList = document.getElementById('leaderboardList');
+const addToLeaderboardBtn = document.getElementById('addToLeaderboardBtn');
+const backFromLeaderboardBtn = document.getElementById('backFromLeaderboardBtn');
 
 // Global variables
 let currentUser = '';
 let currentLikes = 0;
 let currentMode = ''; // 'free' or 'payment'
+let lastScreen = ''; // Track where we came from for back navigation
+
+// Leaderboard data
+let leaderboardData = [
+    { name: 'SupKing2024', likes: 999999, mode: 'free' },
+    { name: 'HababiLegend', likes: 888888, mode: 'payment' },
+    { name: 'RepublicChamp', likes: 777777, mode: 'free' },
+    { name: 'SupMaster', likes: 666666, mode: 'payment' },
+    { name: 'LikesGuru', likes: 555555, mode: 'free' },
+    { name: 'SupNinja', likes: 444444, mode: 'free' },
+    { name: 'HababiPro', likes: 333333, mode: 'payment' },
+    { name: 'RepublicStar', likes: 222222, mode: 'free' },
+    { name: 'SupWizard', likes: 111111, mode: 'payment' },
+    { name: 'LikesHero', likes: 99999, mode: 'free' }
+];
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', function() {
@@ -55,6 +76,10 @@ function setupEventListeners() {
     setLikesBtn.addEventListener('click', handleSetLikes);
     freeResetBtn.addEventListener('click', handleReset);
     paymentResetBtn.addEventListener('click', handleReset);
+    freeLeaderboardBtn.addEventListener('click', () => handleLeaderboard('freeResults'));
+    paymentLeaderboardBtn.addEventListener('click', () => handleLeaderboard('paymentResults'));
+    addToLeaderboardBtn.addEventListener('click', handleAddToLeaderboard);
+    backFromLeaderboardBtn.addEventListener('click', handleBackFromLeaderboard);
     
     // Enter key support
     nameInput.addEventListener('keypress', function(e) {
@@ -85,6 +110,7 @@ function showScreen(screenName) {
     inputScreen.classList.remove('active');
     freeResultsScreen.classList.remove('active');
     paymentResultsScreen.classList.remove('active');
+    leaderboardScreen.classList.remove('active');
     
     // Show requested screen
     switch(screenName) {
@@ -108,6 +134,10 @@ function showScreen(screenName) {
             break;
         case 'paymentResults':
             paymentResultsScreen.classList.add('active');
+            break;
+        case 'leaderboard':
+            leaderboardScreen.classList.add('active');
+            displayLeaderboard();
             break;
     }
 }
@@ -315,6 +345,86 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// Leaderboard Functions
+function handleLeaderboard(fromScreen) {
+    lastScreen = fromScreen;
+    showScreen('leaderboard');
+}
+
+function displayLeaderboard() {
+    // Sort leaderboard by likes (descending)
+    const sortedLeaderboard = [...leaderboardData].sort((a, b) => b.likes - a.likes);
+    
+    leaderboardList.innerHTML = '';
+    
+    sortedLeaderboard.forEach((entry, index) => {
+        const listItem = document.createElement('div');
+        listItem.className = 'leaderboard-item';
+        
+        const rank = index + 1;
+        const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
+        const modeIcon = entry.mode === 'payment' ? '🎁' : '⭐';
+        
+        listItem.innerHTML = `
+            <span class="rank">${medal}</span>
+            <span class="name">${entry.name}</span>
+            <span class="likes">${formatNumber(entry.likes)} ${modeIcon}</span>
+        `;
+        
+        // Highlight current user if they're on the leaderboard
+        if (entry.name === currentUser) {
+            listItem.classList.add('current-user');
+        }
+        
+        leaderboardList.appendChild(listItem);
+    });
+}
+
+function handleAddToLeaderboard() {
+    if (!currentUser || currentLikes === 0) {
+        alert('You need to set your Sup Likes first!');
+        return;
+    }
+    
+    // Check if user already exists on leaderboard
+    const existingIndex = leaderboardData.findIndex(entry => entry.name === currentUser);
+    
+    if (existingIndex !== -1) {
+        // Update existing entry if new score is higher
+        if (currentLikes > leaderboardData[existingIndex].likes) {
+            leaderboardData[existingIndex].likes = currentLikes;
+            leaderboardData[existingIndex].mode = currentMode;
+            alert('🎉 New personal best! Leaderboard updated!');
+        } else {
+            alert('Your current score is not higher than your leaderboard entry.');
+        }
+    } else {
+        // Add new entry
+        leaderboardData.push({
+            name: currentUser,
+            likes: currentLikes,
+            mode: currentMode
+        });
+        alert('🎉 Added to leaderboard!');
+    }
+    
+    // Refresh the display
+    displayLeaderboard();
+    
+    // Add celebration effect
+    celebrateSupLikes();
+}
+
+function handleBackFromLeaderboard() {
+    if (lastScreen === 'freeResults') {
+        showScreen('freeResults');
+    } else if (lastScreen === 'paymentResults') {
+        showScreen('paymentResults');
+    } else {
+        showScreen('mode');
+    }
+}
 
 // Hababi Nation Gate Functions
 function handleYesButton() {
