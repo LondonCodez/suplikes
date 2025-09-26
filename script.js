@@ -35,11 +35,21 @@ const leaderboardScreen = document.getElementById('leaderboardScreen');
 const leaderboardList = document.getElementById('leaderboardList');
 const addToLeaderboardBtn = document.getElementById('addToLeaderboardBtn');
 const backFromLeaderboardBtn = document.getElementById('backFromLeaderboardBtn');
+const subModeScreen = document.getElementById('subModeScreen');
+const subModeTitle = document.getElementById('subModeTitle');
+const userModeBtn = document.getElementById('userModeBtn');
+const adminModeBtn = document.getElementById('adminModeBtn');
+const backFromSubModeBtn = document.getElementById('backFromSubModeBtn');
+const adminPasswordScreen = document.getElementById('adminPasswordScreen');
+const adminPasswordInput = document.getElementById('adminPasswordInput');
+const adminPasswordBtn = document.getElementById('adminPasswordBtn');
+const backFromAdminBtn = document.getElementById('backFromAdminBtn');
 
 // Global variables
 let currentUser = '';
 let currentLikes = 0;
 let currentMode = ''; // 'free' or 'payment'
+let isAdminMode = false;
 let lastScreen = ''; // Track where we came from for back navigation
 
 // Leaderboard data
@@ -87,6 +97,11 @@ function setupEventListeners() {
     paymentLeaderboardBtn.addEventListener('click', () => handleLeaderboard('paymentResults'));
     addToLeaderboardBtn.addEventListener('click', handleAddToLeaderboard);
     backFromLeaderboardBtn.addEventListener('click', handleBackFromLeaderboard);
+    userModeBtn.addEventListener('click', handleUserMode);
+    adminModeBtn.addEventListener('click', handleAdminMode);
+    backFromSubModeBtn.addEventListener('click', handleBackFromSubMode);
+    adminPasswordBtn.addEventListener('click', handleAdminPasswordValidation);
+    backFromAdminBtn.addEventListener('click', handleBackFromAdmin);
     
     // Enter key support
     nameInput.addEventListener('keypress', function(e) {
@@ -106,12 +121,20 @@ function setupEventListeners() {
             handlePasscodeValidation();
         }
     });
+    
+    adminPasswordInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            handleAdminPasswordValidation();
+        }
+    });
 }
 
 // Screen Management
 function showScreen(screenName) {
     // Hide all screens
     modeScreen.classList.remove('active');
+    subModeScreen.classList.remove('active');
+    adminPasswordScreen.classList.remove('active');
     passcodeScreen.classList.remove('active');
     loginScreen.classList.remove('active');
     inputScreen.classList.remove('active');
@@ -123,6 +146,13 @@ function showScreen(screenName) {
     switch(screenName) {
         case 'mode':
             modeScreen.classList.add('active');
+            break;
+        case 'subMode':
+            subModeScreen.classList.add('active');
+            break;
+        case 'adminPassword':
+            adminPasswordScreen.classList.add('active');
+            adminPasswordInput.focus();
             break;
         case 'passcode':
             passcodeScreen.classList.add('active');
@@ -152,12 +182,53 @@ function showScreen(screenName) {
 // Mode Handlers
 function handleFreeMode() {
     currentMode = 'free';
-    showScreen('login');
+    subModeTitle.textContent = 'Free Mode - Choose Access Level';
+    showScreen('subMode');
 }
 
 function handlePaymentMode() {
     currentMode = 'payment';
+    subModeTitle.textContent = 'Gift Mode - Choose Access Level';
+    showScreen('subMode');
+}
+
+function handleUserMode() {
+    isAdminMode = false;
     showScreen('login');
+}
+
+function handleAdminMode() {
+    showScreen('adminPassword');
+}
+
+function handleBackFromSubMode() {
+    showScreen('mode');
+}
+
+function handleAdminPasswordValidation() {
+    const password = adminPasswordInput.value.trim();
+    
+    if (password === '1234') {
+        isAdminMode = true;
+        adminPasswordInput.value = '';
+        
+        adminPasswordBtn.innerHTML = 'Correct! <span class="loading"></span>';
+        adminPasswordBtn.disabled = true;
+        
+        setTimeout(() => {
+            showScreen('login');
+            adminPasswordBtn.innerHTML = 'Enter Admin Mode';
+            adminPasswordBtn.disabled = false;
+        }, 1000);
+    } else {
+        alert('Incorrect admin passcode! Please try again.');
+        adminPasswordInput.focus();
+    }
+}
+
+function handleBackFromAdmin() {
+    adminPasswordInput.value = '';
+    showScreen('subMode');
 }
 
 function handlePasscodeValidation() {
@@ -235,7 +306,7 @@ function handleSetLikes() {
         return;
     }
     
-    if (likes > 999999) {
+    if (!isAdminMode && likes > 999999) {
         alert('Whoa there! The Republic of Sup has a maximum of 999,999 Sup Likes!');
         supLikesInput.focus();
         return;
@@ -271,9 +342,11 @@ function handleReset() {
     currentUser = '';
     currentLikes = 0;
     currentMode = '';
+    isAdminMode = false;
     nameInput.value = '';
     supLikesInput.value = '';
     passcodeInput.value = '';
+    adminPasswordInput.value = '';
     
     // Add loading effect for whichever button was clicked
     const resetButton = event.target;
