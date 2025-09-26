@@ -44,6 +44,7 @@ const adminPasswordScreen = document.getElementById('adminPasswordScreen');
 const adminPasswordInput = document.getElementById('adminPasswordInput');
 const adminPasswordBtn = document.getElementById('adminPasswordBtn');
 const backFromAdminBtn = document.getElementById('backFromAdminBtn');
+const mainLeaderboardBtn = document.getElementById('mainLeaderboardBtn');
 
 // Global variables
 let currentUser = '';
@@ -102,6 +103,7 @@ function setupEventListeners() {
     backFromSubModeBtn.addEventListener('click', handleBackFromSubMode);
     adminPasswordBtn.addEventListener('click', handleAdminPasswordValidation);
     backFromAdminBtn.addEventListener('click', handleBackFromAdmin);
+    mainLeaderboardBtn.addEventListener('click', () => handleLeaderboard('mode'));
     
     // Enter key support
     nameInput.addEventListener('keypress', function(e) {
@@ -503,6 +505,8 @@ function handleBackFromLeaderboard() {
         showScreen('freeResults');
     } else if (lastScreen === 'paymentResults') {
         showScreen('paymentResults');
+    } else if (lastScreen === 'mode') {
+        showScreen('mode');
     } else {
         showScreen('mode');
     }
